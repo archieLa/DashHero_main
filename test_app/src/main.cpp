@@ -2,15 +2,30 @@
 
 int main(int argc, char **argv) {
 
-CLI::App appParses{"DashHero Test App"};
+CLI::App argsParses{"DashHero Test App"};
 
+// Need to make this option required
 char appIdentityOption;
-appParses.add_option("-o", appIdentityOption, "");
+argsParses.add_option("-o", appIdentityOption, "");
+
+// Need to all the other option and fiute out how to add
+// option that depend on each other
+std::string gpxFile;
+argsParses.add_option("-g", appIdentityOption, "");
 
 
-// Catch an exception and handle with app.exit for nice clean exit if arguments are
-// invalid
-CLI11_PARSE(appParses, argc, argv);
+
+
+
+try 
+{
+    CLI11_PARSE(argsParses, argc, argv);
+}
+catch (const CLI::ParseError& err)
+{
+    argsParses.exit(err);
+}
+
 
 
 }
