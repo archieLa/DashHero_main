@@ -16,16 +16,22 @@ Test app used to aid development and testing of DashHero desktop and camera/phon
         - **[-o d] required** Configures app to be DashHero desktop app simulator
         - **[-l path] optional. Default value: current dir** Path to log file for storing received gps coordinates
     - Application start example:
-        - **`./DashHeroTest -d c -l /tmp/log`**
+        - **`./DashHeroTest -o d c -l /tmp/log`**
 - DashHero repeater
-    - Description: This option 
+    - Description: This option acts as a repeater of published active tracking messages. It subscribes to active tracking messages, based on license plate argument provided by the user. When message is received, the app will modify (time stamp and/or coordinates) and republish it. This allows the system to be tested as if two (or more depending on number of instances of the app running) DashHero camera apps were present and actively tracking with only single instance of DashHero camera app doing real plate detection and tracking.
+    - Startup configuration opions:
+        - **[-o r] required** Configures app to be DashHero repeater
+        - **[-t ms_offset_value] optional. Default value: 1000ms** Specifies how the app should modify timestamp received from active tracking message. Provided offset will be added to received timestamp
+        -- **[-c offset_value] optional. Default value 0** Specifies how the app should modify GPS coordinates received from active tracking message. The app will modify received longitude and latitude by adding provided offset
+    - Application start example:
+        **`./DashHeroTest -o r -c 5`** 
 
 ## Building
 - ### Dependencies
     - Eclipse Paho MQTT C++ Client Library
         - https://github.com/eclipse/paho.mqtt.cpp
-        - Cmake depends on the dynamic library being present in the system path, and built with SSL option
+        - Cmake depends on the dynamic library being present in the system path. libpaho-mqttpp3 and libssl
 
 ## Running
 - ### Dependencies
-    - ACtive MQTT server
+    - Active MQTT server
