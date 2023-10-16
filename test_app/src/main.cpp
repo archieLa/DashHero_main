@@ -14,22 +14,21 @@ argsParses.add_flag(
 
 bool desktopAppSim{false};
 argsParses.add_flag(
-    "-c",
+    "-d",
     cameraSim,
     "Configures app to be DashHero desktop app simulator");
 
 bool repeater{false};
 argsParses.add_flag(
-    "-c",
+    "-r",
     cameraSim,
     "Configures app to be DashHero repeater");
 
 // Camera simulator parameters
-std::string gpxFileOption;
+std::string gpxFileOption("");
 argsParses.add_option("-g", gpxFileOption,
  "File path to recorded .gpx file to read from")
  ->needs("-c")
- ->required()
  ->check(CLI::ExistingFile);
 
 unsigned int gpsUpdateIntervalMs = 1000;
@@ -54,7 +53,7 @@ argsParses.add_option(
 
 unsigned int gpsCoordinatesOffset = 0;
 argsParses.add_option(
-    "-g",
+    "-p",
     gpsCoordinatesOffset,
     "Specifies value that will be added to longitue and latitude of receivied gps coordinates")
     ->needs("-r");    

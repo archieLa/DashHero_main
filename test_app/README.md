@@ -22,7 +22,7 @@ Test app used to aid development and testing of DashHero desktop and camera/phon
     - Startup configuration opions:
         - **[-r]** Configures app to be DashHero repeater
         - **[-t ms_offset_value] optional. Default value: 1000ms** Specifies how the app should modify timestamp received from active tracking message. Provided offset will be added to received timestamp
-        -- **[-g offset_value] optional. Default value 0** Specifies how the app should modify GPS coordinates received from active tracking message. The app will modify received longitude and latitude by adding provided offset
+        -- **[-p offset_value] optional. Default value 0** Specifies how the app should modify GPS coordinates received from active tracking message. The app will modify received longitude and latitude by adding provided offset
     - Application start example:
         **`./DashHeroTest -r -c 5`** 
 Note: identity option is exclusive and only one of the listed flags: [-c], [-d], [-r] should be provided at the time
