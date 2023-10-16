@@ -1,31 +1,94 @@
 #include <CLI11.hpp>
+#include <algorithm>
 
 int main(int argc, char **argv) {
 
 CLI::App argsParses{"DashHero Test App"};
 
-// Need to make this option required
-char appIdentityOption;
-argsParses.add_option("-o", appIdentityOption, "");
+// App identity selection
+bool cameraSim{false};
+argsParses.add_flag(
+    "-c",
+    cameraSim,
+    "Configures app to be DashHero camera simulator");
 
-// Need to all the other option and fiute out how to add
-// option that depend on each other
-std::string gpxFile;
-argsParses.add_option("-g", appIdentityOption, "");
+bool desktopAppSim{false};
+argsParses.add_flag(
+    "-c",
+    cameraSim,
+    "Configures app to be DashHero desktop app simulator");
 
+bool repeater{false};
+argsParses.add_flag(
+    "-c",
+    cameraSim,
+    "Configures app to be DashHero repeater");
 
+// Camera simulator parameters
+std::string gpxFileOption;
+argsParses.add_option("-g", gpxFileOption,
+ "File path to recorded .gpx file to read from")
+ ->needs("-c")
+ ->required()
+ ->check(CLI::ExistingFile);
 
+unsigned int gpsUpdateIntervalMs = 1000;
+argsParses.add_option("-i",
+ gpsUpdateIntervalMs,
+"Parameter specifying how often gps coordinate should be read from .gpx file "
+"and published")->needs("-c");
+
+// Desktop app simulator parameters
+std::string logFile("DashHeroLog.log");
+argsParses.add_option(
+    "-l",
+    logFile,
+    "File path and name to log received coordinates")->needs("-d");
+
+// Repeater app parameters
+unsigned int timestampOffsetMs = 1000;
+argsParses.add_option(
+    "-t",
+    timestampOffsetMs,
+    "Specifies ms value that will be added to received timestamps")->needs("-r");
+
+unsigned int gpsCoordinatesOffset = 0;
+argsParses.add_option(
+    "-g",
+    gpsCoordinatesOffset,
+    "Specifies value that will be added to longitue and latitude of receivied gps coordinates")
+    ->needs("-r");    
 
 
 try 
 {
     CLI11_PARSE(argsParses, argc, argv);
+    
+    // Validate that at least one and only one app identity flag is present
+    if (cameraSim || desktopAppSim || repeater)
+    {
+        std::vector<bool> uniqueOptionValidator{cameraSim, desktopAppSim, repeater};
+        
+        if (std::count(
+            uniqueOptionValidator.begin(),
+            uniqueOptionValidator.end(),
+            true) != 1){
+                throw(CLI::ValidationError("More than one app identity options provided"));
+            }
+    }
+    else
+    {
+        throw(CLI::ValidationError("App identity flag not provided"));   
+    }
 }
-catch (const CLI::ParseError& err)
+catch (const CLI::Error& err)
 {
     argsParses.exit(err);
+    return EXIT_FAILURE;
 }
 
+
+return EXIT_SUCCESS;
 
 
 }
