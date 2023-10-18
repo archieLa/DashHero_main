@@ -1,5 +1,6 @@
 #include <CLI11.hpp>
 #include <algorithm>
+#include <mqtt/async_client.h>
 
 int main(int argc, char **argv) {
 
