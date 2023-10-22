@@ -4,15 +4,17 @@ project(DashHero_testApp)
 #import PahoMqttCpp library
 find_package(PahoMqttCpp REQUIRED)
 
-#set(PAHO_MQTT_INCLUDE_PATH "")
-#get_target_property(PAHO_MQTT_INCLUDE_PATH PahoMqttCpp::paho-mqttpp3 INTERFACE_INCLUDE_DIRECTORIES)
-
 set(APP_SRC_DIR "${CMAKE_SOURCE_DIR}/src")
-
 set(LIB_SRC_DIR "${CMAKE_SOURCE_DIR}/src/lib")
 
 set(APP_SRC
 "${APP_SRC_DIR}/main.cpp"
+"${APP_SRC_DIR}/CameraSimIdentity.h"
+"${APP_SRC_DIR}/CameraSimIdentity.cpp"
+"${APP_SRC_DIR}/DappSimIdentity.h"
+"${APP_SRC_DIR}/DappSimIdentity.cpp"
+"${APP_SRC_DIR}/RepeaterIdentity.h"
+"${APP_SRC_DIR}/RepeaterIdentity.cpp"
 "${LIB_SRC_DIR}/CLI11.hpp")
 
 add_executable(

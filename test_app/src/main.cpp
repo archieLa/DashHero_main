@@ -2,6 +2,12 @@
 #include <algorithm>
 #include <mqtt/async_client.h>
 
+#include "IAppIdentity.h"
+#include "CameraSimIdentity.h"
+#include "DappSimIdentity.h"
+#include "RepeaterIdentity.h"
+
+
 int main(int argc, char **argv) {
 
 CLI::App argsParses{"DashHero Test App"};
@@ -52,13 +58,12 @@ argsParses.add_option(
     timestampOffsetMs,
     "Specifies ms value that will be added to received timestamps")->needs("-r");
 
-unsigned int gpsCoordinatesOffset = 0;
+double gpsCoordinatesOffset = 0;
 argsParses.add_option(
     "-p",
     gpsCoordinatesOffset,
     "Specifies value that will be added to longitue and latitude of receivied gps coordinates")
     ->needs("-r");    
-
 
 try 
 {
@@ -87,8 +92,23 @@ catch (const CLI::Error& err)
     return EXIT_FAILURE;
 }
 
+std::unique_ptr<DashHero::TestApp::IAppIdentity> appIdentity;
+// Configure the app identity based on the flags
+if (cameraSim)
+{
+    appIdentity.reset(new DashHero::TestApp::CameraSimIdentity(gpxFileOption, gpsUpdateIntervalMs));
+}
+else if (desktopAppSim) 
+{
+    appIdentity.reset(new DashHero::TestApp::DappSimIdentity(logFile));
+}
+else
+{
+    appIdentity.reset(new DashHero::TestApp::RepeaterIdentity(timestampOffsetMs, gpsCoordinatesOffset));
+}
+
+appIdentity->execute();
 
 return EXIT_SUCCESS;
-
 
 }
