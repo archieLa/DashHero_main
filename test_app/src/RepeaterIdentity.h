@@ -1,7 +1,9 @@
 #ifndef DASH_HERO_TEST_APP_REPEATERIDENTITY_H
 #define DASH_HERO_TEST_APP_REPEATERIDENTITY_H
 
+#include "BrokerConnectionParams.h"
 #include "IAppIdentity.h"
+
 
 namespace DashHero::TestApp
 {
@@ -20,6 +22,7 @@ public:
 private:
     unsigned int m_timestampOffsetMs;
     double m_gpsCoordinatesOffset;
+
 };
 
 }

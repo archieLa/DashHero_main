@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <mqtt/async_client.h>
 
+#include "BrokerConnectionParams.h"
 #include "IAppIdentity.h"
 #include "CameraSimIdentity.h"
 #include "DappSimIdentity.h"
@@ -31,12 +32,37 @@ argsParses.add_flag(
     cameraSim,
     "Configures app to be DashHero repeater");
 
+// User credentials used for connecting to MQTT broker
+DashHero::TestApp::BrokerConnectionParams& brokerParams = 
+    DashHero::TestApp::BrokerConnectionParams::get_broker_conn_params();
+
+argsParses.add_option("-s", brokerParams.serverAddr,
+    "Server address of MQTT broker")
+    ->required();
+
+argsParses.add_option("-u", brokerParams.username,
+    "User name used to connect to Hive MQTT broker")
+    ->required();
+
+argsParses.add_option("-passw", brokerParams.password,
+    "Password used to connect to Hive MQTT broker")
+    ->required();
+
+argsParses.add_option("-k", brokerParams.keyStoreFile,
+    "Path to key store file required for secure connection to the broker")
+    ->required();
+
+argsParses.add_option("-st", brokerParams.trustStoreFile,
+    "Path to key store file required for secure connection to the broker")
+    ->required();
+
+
 // Camera simulator parameters
 std::string gpxFileOption("");
 argsParses.add_option("-g", gpxFileOption,
- "File path to recorded .gpx file to read from")
- ->needs("-c")
- ->check(CLI::ExistingFile);
+    "File path to recorded .gpx file to read from")
+    ->needs("-c")
+    ->check(CLI::ExistingFile);
 
 unsigned int gpsUpdateIntervalMs = 1000;
 argsParses.add_option("-i",
@@ -96,15 +122,18 @@ std::unique_ptr<DashHero::TestApp::IAppIdentity> appIdentity;
 // Configure the app identity based on the flags
 if (cameraSim)
 {
-    appIdentity.reset(new DashHero::TestApp::CameraSimIdentity(gpxFileOption, gpsUpdateIntervalMs));
+    appIdentity.reset(new DashHero::TestApp::CameraSimIdentity(
+        gpxFileOption, gpsUpdateIntervalMs));
 }
 else if (desktopAppSim) 
 {
-    appIdentity.reset(new DashHero::TestApp::DappSimIdentity(logFile));
+    appIdentity.reset(new DashHero::TestApp::DappSimIdentity(
+        logFile));
 }
 else
 {
-    appIdentity.reset(new DashHero::TestApp::RepeaterIdentity(timestampOffsetMs, gpsCoordinatesOffset));
+    appIdentity.reset(new DashHero::TestApp::RepeaterIdentity(
+        timestampOffsetMs, gpsCoordinatesOffset));
 }
 
 appIdentity->execute();

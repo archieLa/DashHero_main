@@ -3,7 +3,7 @@
 DashHero::TestApp::CameraSimIdentity::CameraSimIdentity
 (
     const std::string& gpxFilePath,
-    unsigned int gpsUpdateIntervalMs 
+    unsigned int gpsUpdateIntervalMs
 ):
 m_gpxFilePath(gpxFilePath),
 m_gpsUpdateIntervalMs(gpsUpdateIntervalMs)

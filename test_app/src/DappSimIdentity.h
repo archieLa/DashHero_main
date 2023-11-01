@@ -2,6 +2,8 @@
 #define DASH_HERO_TEST_APP_DAPPSIMIDENTITY_H
 
 #include <string>
+
+#include "BrokerConnectionParams.h"
 #include "IAppIdentity.h"
 
 namespace DashHero::TestApp
