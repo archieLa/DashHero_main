@@ -24,7 +24,7 @@ bool desktopAppSim{false};
 argsParses.add_flag(
     "-d",
     cameraSim,
-    "Configures app to be DashHero desktop app simulator");
+    "Configures app to be DashHero desktop app simulator. Test");
 
 bool repeater{false};
 argsParses.add_flag(
